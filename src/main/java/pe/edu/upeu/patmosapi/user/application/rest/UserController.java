@@ -1,5 +1,6 @@
 package pe.edu.upeu.patmosapi.user.application.rest;
 
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,7 @@ import java.util.Map;
 @RestController
 @CrossOrigin({"*"})
 @RequestMapping("/api/users")
+@Api(value = "/api/users", tags = "Operaciones Usuario")
 public class UserController {
 
     private static final Integer DATA_EMPTY = 0;

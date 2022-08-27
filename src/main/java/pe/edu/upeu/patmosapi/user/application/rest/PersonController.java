@@ -1,6 +1,9 @@
 package pe.edu.upeu.patmosapi.user.application.rest;
 
-import org.apache.coyote.Response;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
@@ -18,6 +21,7 @@ import java.util.Map;
 @RestController
 @CrossOrigin({"*"})
 @RequestMapping("/api/persons")
+@Api(value = "/api/persons", tags = "Operaciones Persona")
 public class PersonController {
 
     private final static String MSG              = "msg";
@@ -28,6 +32,16 @@ public class PersonController {
     @Autowired
     private PersonService personService;
 
+    @ApiOperation(
+            value = "Obtener todos los usuarios / personas",
+            nickname = "Obtener todas las personas",
+            response = Long.class
+    )
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Todo correcto p!"),
+            @ApiResponse(code = 500, message = "Error del servidor."),
+            @ApiResponse(code = 404, message = "No se encontró nada pipipiip.")
+    })
     @GetMapping
     private ResponseEntity< ? > getAll() {
 
@@ -45,7 +59,12 @@ public class PersonController {
 
         }
 
-        response.put(MSG, "Se hán obtenido las primeras 2 personas");
+        if (persons == null) {
+            response.put(MSG,"No se encontró ninguna persona");
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+        }
+
+        response.put(MSG, "Se hán obtenido las 10 primeras personas.");
         response.put(DATA_LIST_PERSON, persons);
 
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
@@ -53,13 +72,21 @@ public class PersonController {
     }
 
 
+    @ApiOperation(
+            value = "Creación de la persona, sumado a eso el usuario.",
+            nickname = "Crear nueva persona",
+            response = Long.class
+    )
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Creado correctamente uwu!"),
+            @ApiResponse(code = 500, message = "Error del servidor.")
+    })
     @PostMapping("/create")
     private ResponseEntity< ? > create(
             @RequestBody
             PersonDto personDto
     ) {
 
-        System.out.println("Persona -> " + personDto.toString());
         Map<String, Object> response = new HashMap<>();
         Person person                = null;
 
