@@ -55,6 +55,18 @@
 			<version>2.9.2</version>
 		</dependency>
 
+		<!-- agregando seguridad a la aplicacion -->
+		<dependency>
+			<groupId>org.springframework.security.oauth</groupId>
+			<artifactId>spring-security-oauth2</artifactId>
+			<version>2.5.0.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-jwt</artifactId>
+			<version>1.1.1.RELEASE</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>

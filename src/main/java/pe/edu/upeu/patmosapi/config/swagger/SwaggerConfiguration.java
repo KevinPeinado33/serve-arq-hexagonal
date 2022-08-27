@@ -1,4 +1,4 @@
-package pe.edu.upeu.patmosapi.config;
+package pe.edu.upeu.patmosapi.config.swagger;
 
 import com.google.common.collect.Sets;
 import org.springframework.context.annotation.Bean;
