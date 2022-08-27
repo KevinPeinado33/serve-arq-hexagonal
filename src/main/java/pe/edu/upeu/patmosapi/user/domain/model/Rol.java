@@ -6,21 +6,15 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.List;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Document("users")
-public class User {
+@Document("roles")
+public class Rol {
 
     @Id
     private String id;
 
     private String name;
-    private String password;
-    private Boolean status;
-
-    private List<Rol> roles;
-
+    private Boolean state;
 }

@@ -17,7 +17,6 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
 import java.util.Arrays;
 
-
 @Configuration
 @EnableAuthorizationServer
 public class AutherizationServerConfig extends AuthorizationServerConfigurerAdapter {
@@ -34,15 +33,16 @@ public class AutherizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
-
-        security.tokenKeyAccess("permitAll()")
+        security
+                .tokenKeyAccess("permitAll()")
                 .checkTokenAccess("isAuthenticated()");
-
     }
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        clients.inMemory().withClient("reactapp")
+        clients
+                .inMemory()
+                .withClient("reactapp")
                 .secret(passwordEncoder.encode("12345"))
                 .scopes("read", "write")
                 .authorizedGrantTypes("password", "refresh_token")
@@ -55,9 +55,12 @@ public class AutherizationServerConfig extends AuthorizationServerConfigurerAdap
 
         TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
 
-        tokenEnhancerChain.setTokenEnhancers(Arrays.asList(infoAdditionalToken, accessTokenConverter()));
+        tokenEnhancerChain.setTokenEnhancers(
+                Arrays.asList( infoAdditionalToken, accessTokenConverter() )
+        );
 
-        endpoints.authenticationManager(authenticationManager)
+        endpoints
+                .authenticationManager(authenticationManager)
                 .tokenStore(tokenStore())
                 .accessTokenConverter(accessTokenConverter())
                 .tokenEnhancer(tokenEnhancerChain);

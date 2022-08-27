@@ -14,10 +14,15 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/publication/get-all-publications", "/product/get-all-products", "/product/get-all-categorys")
+                .antMatchers(
+                        HttpMethod.GET,
+                        "/api/persons",
+                        "/api/users/get-all"
+                )
                 .permitAll()
                 .anyRequest()
                 .authenticated();
 
     }
+
 }
