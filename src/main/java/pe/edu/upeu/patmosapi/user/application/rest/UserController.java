@@ -5,12 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pe.edu.upeu.patmosapi.user.domain.model.User;
 import pe.edu.upeu.patmosapi.user.domain.service.UserService;
+import pe.edu.upeu.patmosapi.user.infrastructure.resource.DataErrorUtil;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +25,24 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @PostMapping("/sign-in")
+    public User signIn(
+            @RequestParam("username")
+            String username,
+            @RequestParam("password")
+            String password
+    ) {
+
+        String token = userService.getJwtToken(username);
+        User user    = new User();
+
+        user.setToken(token);
+        user.setName(username);
+
+        return user;
+
+    }
+
     @GetMapping("/get-all")
     public ResponseEntity< ? > getAll() {
 
@@ -38,17 +54,7 @@ public class UserController {
         } catch (DataAccessException e) {
 
             response.put("msg", "Error al obtener usuarios");
-            response.put(
-                    "error",
-                    e
-                        .getMessage()
-                        .concat(": ")
-                        .concat(
-                                e
-                                    .getMostSpecificCause()
-                                    .getMessage()
-                        )
-            );
+            response.put("error", DataErrorUtil.showErrorMsg( e ));
 
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 

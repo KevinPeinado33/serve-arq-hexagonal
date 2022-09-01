@@ -95,7 +95,7 @@ public class PersonController {
         } catch (DataAccessException e) {
 
             response.put(MSG, "Error al crear la persona");
-            response.put(ERROR,DataErrorUtil.showErrorMsg( e ));
+            response.put(ERROR, DataErrorUtil.showErrorMsg( e ));
 
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 

@@ -1,6 +1,7 @@
 package pe.edu.upeu.patmosapi.user.domain.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pe.edu.upeu.patmosapi.user.application.request.PersonDto;
@@ -23,12 +24,19 @@ public class PersonServiceImpl implements PersonService {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
     @Override
     @Transactional
     public Person create(PersonDto personDto) {
 
         Person newPerson = PersonBuilder.convertToEntity( personDto );
         User newUser     = UserBuilder.convertToEntity( personDto );
+
+        newUser.setPassword(
+                passwordEncoder.encode( personDto.getPassword() )
+        );
 
         userService.create( newUser );
 
